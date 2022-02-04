@@ -1,0 +1,114 @@
+<div class=" container">
+    <form class="add-product" action="post" #productForm = ngForm >
+        <div class="add-product__images slider">
+            <div class="add-product__image-actions">
+                <div class="add-product__image-action">
+                    <a href="#"><i class="fas fa-plus-square"></i></a>
+                    <a href="#"><i class="fas fa-edit"></i></a>
+                    <a href="#"><i class="fas fa-trash-alt"></i></a>
+                </div>
+            </div>
+            <div class="slider__items">
+                <div class="slider__item active" style="background-image: url(img/products/product-grey-7.jpg)"></div>
+                <div class="slider__item" style="background-image: url(img/products/product-grey-7.jpg)"></div>
+                <div class="slider__item" style="background-image: url(img/products/product-grey-7.jpg)"></div>
+            </div>
+            <div class="slider__indicators">
+                <span class="slider__indicator active"></span>
+                <span class="slider__indicator"></span>
+                <span class="slider__indicator"></span>
+            </div>
+        </div>
+        <div class="add-product__data">
+            <div class="form-controls">
+                <section class="tabs">
+                    <div class="tabs__headers">
+                        <div class="tabs__header active">
+                            English
+                        </div>
+                        <div class="tabs__header">
+                            Arabic
+                        </div>
+                    </div>
+                    <div class="tabs__bodies">
+                        <div class="tabs__body active">
+                            <div class="form-group" [ngClass]="{'invalid':nameinputelement.touched && nameinputelement.invalid}">
+                                <label for="">Name</label>
+                                <input required class="form-control" #nameinputelement=ngModel pattern="^[\u0621-\u064A\u0660-\u0669 ]+$" type="text" ngModel name="name" [ngModel]="editmode ? product.data[0].name:''" id="">
+                                <span *ngIf="nameinputelement.touched && nameinputelement.invalid&& nameinputelement.errors?.['required']">This Field is required</span>
+                                <span *ngIf="nameinputelement.touched && nameinputelement.invalid&& nameinputelement.errors?.['pattern']">Please enter valid data</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Description</label>
+                                <textarea required class="form-control" ngModel name="description" [ngModel]="editmode ? product.data[0].description:''" id="" cols="30" rows="4"></textarea>
+                            </div>
+                        </div>
+                        <div class="tabs__body ">
+                            <div class="form-group invalid">
+                                <label for="">Name</label>
+                                <input class="form-control" type="text" name="" id="">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Description</label>
+                                <textarea class="form-control" name="" id="" cols="30" rows="4"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="form-group">
+                    <label for="">Price</label>
+                    <input class="form-control" type="number" ngModel name="price" [ngModel]="editmode ? product.price:''" id="">
+                </div>
+                <div class="add-product__discount">
+                    <div class="form-group">
+                        <label for="">Satus</label>
+                        <div class="form-group__radios">
+                            <div class="form-group__radio"><input type="radio" name="" id=""><span>On Sale</span></div>
+                            <div class="form-group__radio"><input type="radio" name="" id=""><span>Not On Sale</span></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Discount</label>
+                        <input class="form-control" type="number" ngModel name="discount" [ngModel]="editmode ? product.discount:''" id="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="">Payment Types</label>
+                    <div class="form-group__checkboxs">
+                        <div class="form-group__checkbox" *ngFor="let payment of paymenttypes ;let i = index "><input ngModel type="checkbox" (input)="changeoncheckbox(i)" [value]="payment.id" [name]="'checbox_'+payment.id" id=""><span>
+                       {{payment.name}} </span></div>
+                        
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="">Category</label>
+                    <select class="form-control" ngModel name="category" [ngModel]="editmode ? product.category.id:''" id="">
+                        <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
+                       
+                    </select>
+                </div>
+
+                <div class="taged-textbox form-group">
+                    <label class="taged-textbox__lable" for="">Tags</label>
+                    <div class="taged-textbox__data">
+                        <div class="taged-textbox__tags">
+                            <div *ngFor="let tag of tags" class="taged-textbox__tag"><span>{{tag.name}}</span><a  class="taged-textbox__remove"><i
+
+                           (click)="ondeletetag(tag)" class="fas fa-times"></i></a></div>
+                           
+                        </div>
+                        <div class="taged-textbox__clear">
+                            <a href="#"><i class="fas fa-times"></i></a>
+                        </div>
+                    </div>
+                    <input class="taged-textbox__textbox form-control" #taginput (keyup.enter)="tags.push({name:taginput.value})" type="text" name="" id="">
+                </div>
+                <div class="add-product__actions">
+                    <button href="#" class="btn btn--gray">Cancel</button>
+                    <button (click)="onaddproduct(productForm)" [disabled]="!productForm.valid" type="button" class="btn btn--primary">{{editmode?'Edit':'Add'}}</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
